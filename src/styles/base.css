@@ -1,0 +1,206 @@
+/* =========================================================
+   myodesk 基础样式
+   设计令牌 / 重置 / 跨组件复用的像素控件
+   参考 oodlecat.neocities.org (nekOS) 的像素桌面美学
+   ========================================================= */
+
+:root {
+  --wall-deep: #08040f;
+  --wall-mid: #170a26;
+  --ink: #0d0618;
+
+  --main: #00d3ff;
+  --main-dark: #007a9f;
+  --main-light: #8ffaff;
+
+  --acct: #f235d9;
+  --acct-light: #ff9df3;
+  --acct-dark: #3a1188;
+
+  --cream: #fff5e6;
+  --gold: #e4be51;
+
+  /* 像素字体打头，中文回退到系统黑体，避免缺字变成宋体/方框 */
+  --fh: 'Silkscreen', 'Pixelify Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', monospace;
+  --fb: 'Pixelify Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', monospace;
+
+  /* 像素光标（白/青两色箭头，热点 1,1） */
+  --cursor-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' shape-rendering='crispEdges'%3E%3Cg fill='%230d0618'%3E%3Crect x='1' y='1' width='1' height='11'/%3E%3Crect x='2' y='2' width='1' height='11'/%3E%3Crect x='3' y='3' width='1' height='10'/%3E%3Crect x='4' y='4' width='1' height='9'/%3E%3Crect x='5' y='5' width='1' height='8'/%3E%3Crect x='6' y='6' width='1' height='7'/%3E%3Crect x='7' y='7' width='1' height='5'/%3E%3Crect x='8' y='8' width='1' height='3'/%3E%3Crect x='4' y='11' width='3' height='1'/%3E%3Crect x='5' y='12' width='3' height='1'/%3E%3Crect x='6' y='13' width='3' height='1'/%3E%3C/g%3E%3Cg fill='%23fff5e6'%3E%3Crect x='1' y='1' width='1' height='9'/%3E%3Crect x='2' y='2' width='1' height='9'/%3E%3Crect x='3' y='3' width='1' height='8'/%3E%3Crect x='4' y='4' width='1' height='7'/%3E%3Crect x='5' y='5' width='1' height='6'/%3E%3Crect x='6' y='6' width='1' height='5'/%3E%3Crect x='7' y='7' width='1' height='3'/%3E%3C/g%3E%3C/svg%3E")
+      1 1, default;
+  --cursor-link: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' shape-rendering='crispEdges'%3E%3Cg fill='%230d0618'%3E%3Crect x='1' y='1' width='1' height='11'/%3E%3Crect x='2' y='2' width='1' height='11'/%3E%3Crect x='3' y='3' width='1' height='10'/%3E%3Crect x='4' y='4' width='1' height='9'/%3E%3Crect x='5' y='5' width='1' height='8'/%3E%3Crect x='6' y='6' width='1' height='7'/%3E%3Crect x='7' y='7' width='1' height='5'/%3E%3Crect x='8' y='8' width='1' height='3'/%3E%3Crect x='4' y='11' width='3' height='1'/%3E%3Crect x='5' y='12' width='3' height='1'/%3E%3Crect x='6' y='13' width='3' height='1'/%3E%3C/g%3E%3Cg fill='%2300d3ff'%3E%3Crect x='1' y='1' width='1' height='9'/%3E%3Crect x='2' y='2' width='1' height='9'/%3E%3Crect x='3' y='3' width='1' height='8'/%3E%3Crect x='4' y='4' width='1' height='7'/%3E%3Crect x='5' y='5' width='1' height='6'/%3E%3Crect x='6' y='6' width='1' height='5'/%3E%3Crect x='7' y='7' width='1' height='3'/%3E%3C/g%3E%3C/svg%3E")
+      1 1, pointer;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:focus-visible {
+  outline: 2px dotted var(--acct-light);
+  outline-offset: 2px;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--wall-deep);
+  color: var(--cream);
+  font-family: var(--fb);
+  font-size: 14px;
+  cursor: var(--cursor-arrow);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: var(--cursor-link);
+}
+
+a {
+  color: inherit;
+}
+
+/* 像素图标 */
+svg.px {
+  display: block;
+  width: 24px;
+  height: 24px;
+  image-rendering: pixelated;
+}
+
+/* 像素切角（胶囊 / 贴纸） */
+.pixel-corners {
+  clip-path: polygon(
+    0 6px, 3px 6px, 3px 3px, 6px 3px, 6px 0,
+    calc(100% - 6px) 0, calc(100% - 6px) 3px, calc(100% - 3px) 3px,
+    calc(100% - 3px) 6px, 100% 6px,
+    100% calc(100% - 6px), calc(100% - 3px) calc(100% - 6px),
+    calc(100% - 3px) calc(100% - 3px), calc(100% - 6px) calc(100% - 3px),
+    calc(100% - 6px) 100%,
+    6px 100%, 6px calc(100% - 3px), 3px calc(100% - 3px),
+    3px calc(100% - 6px), 0 calc(100% - 6px)
+  );
+}
+
+/* ---------- 窗口内容面板（内凹米白） ---------- */
+.wbody {
+  padding: 10px 12px;
+  background: var(--cream);
+  border: 4px solid;
+  border-color: var(--main-dark) var(--main-light) var(--main-light) var(--main-dark);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.wbody p {
+  margin: 0 0 10px;
+}
+.wbody p:last-child {
+  margin-bottom: 0;
+}
+.wbody b {
+  color: var(--acct-dark);
+}
+.wbody .meta {
+  font-family: var(--fh);
+  font-size: 10px;
+  letter-spacing: 0.3px;
+  color: #6b4a72;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---------- 像素按钮 ---------- */
+.pxbtn {
+  padding: 6px 12px 4px;
+  background: var(--acct);
+  color: var(--cream);
+  font-family: var(--fh);
+  font-size: 11px;
+  letter-spacing: 0.4px;
+  border: 3px solid;
+  border-color: var(--acct-light) var(--acct-dark) var(--acct-dark) var(--acct-light);
+  cursor: var(--cursor-link);
+}
+.pxbtn:hover {
+  background: var(--acct-light);
+  color: var(--ink);
+}
+.pxbtn:active {
+  transform: translate(2px, 2px);
+  border-color: var(--acct-dark) var(--acct-light) var(--acct-light) var(--acct-dark);
+}
+.pxbtn.alt {
+  background: var(--cream);
+  color: var(--ink);
+  border-color: #fff var(--acct-dark) var(--acct-dark) #fff;
+}
+.pxbtn.alt:hover {
+  background: #fff;
+}
+
+/* ---------- 全局动画 ---------- */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes load {
+  from {
+    width: 24%;
+  }
+  to {
+    width: 96%;
+  }
+}
+@keyframes bob {
+  from {
+    transform: translateY(-2px);
+  }
+  to {
+    transform: translateY(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
