@@ -189,19 +189,23 @@ function toggleMute() {
       <button class="tbtn" type="button" :title="t('music.next')" disabled>&gt;|</button>
     </div>
 
-    <!-- CD 用 SVG 硬边扇形画：不依赖 conic-gradient，任何引擎都能画出来 -->
-    <svg class="cd" viewBox="0 0 92 92" aria-hidden="true" focusable="false">
-      <path d="M46 46 L46 4 A42 42 0 0 1 75.7 16.3 Z" fill="#ff9df3" />
-      <path d="M46 46 L75.7 16.3 A42 42 0 0 1 88 46 Z" fill="#8ffaff" />
-      <path d="M46 46 L88 46 A42 42 0 0 1 75.7 75.7 Z" fill="#fff5e6" />
-      <path d="M46 46 L75.7 75.7 A42 42 0 0 1 46 88 Z" fill="#ff9df3" />
-      <path d="M46 46 L46 88 A42 42 0 0 1 16.3 75.7 Z" fill="#8ffaff" />
-      <path d="M46 46 L16.3 75.7 A42 42 0 0 1 4 46 Z" fill="#fff5e6" />
-      <path d="M46 46 L4 46 A42 42 0 0 1 16.3 16.3 Z" fill="#f235d9" />
-      <path d="M46 46 L16.3 16.3 A42 42 0 0 1 46 4 Z" fill="#ff9df3" />
-      <circle cx="46" cy="46" r="12" fill="#fff5e6" />
-      <circle cx="46" cy="46" r="8" fill="#0d0618" />
-      <circle cx="46" cy="46" r="44" fill="none" stroke="#0d0618" stroke-width="4" />
+    <!-- CD 用 SVG 硬边扇形画：只让中间的扇形组转，外圈与投影保持不动 -->
+    <svg class="cd" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+      <circle cx="58" cy="58" r="46" fill="rgba(6, 2, 14, 0.5)" />
+      <circle cx="50" cy="50" r="49" fill="#3a1188" />
+      <circle cx="50" cy="50" r="46" fill="#0d0618" />
+      <g class="cd-wedges">
+        <path d="M50 50 L50 8 A42 42 0 0 1 79.7 20.3 Z" fill="#ff9df3" />
+        <path d="M50 50 L79.7 20.3 A42 42 0 0 1 92 50 Z" fill="#8ffaff" />
+        <path d="M50 50 L92 50 A42 42 0 0 1 79.7 79.7 Z" fill="#fff5e6" />
+        <path d="M50 50 L79.7 79.7 A42 42 0 0 1 50 92 Z" fill="#ff9df3" />
+        <path d="M50 50 L50 92 A42 42 0 0 1 20.3 79.7 Z" fill="#8ffaff" />
+        <path d="M50 50 L20.3 79.7 A42 42 0 0 1 8 50 Z" fill="#fff5e6" />
+        <path d="M50 50 L8 50 A42 42 0 0 1 20.3 20.3 Z" fill="#f235d9" />
+        <path d="M50 50 L20.3 20.3 A42 42 0 0 1 50 8 Z" fill="#ff9df3" />
+      </g>
+      <circle cx="50" cy="50" r="13" fill="#fff5e6" />
+      <circle cx="50" cy="50" r="9" fill="#0d0618" />
     </svg>
   </div>
 </template>
@@ -379,11 +383,14 @@ function toggleMute() {
   bottom: -58px;
   width: 92px;
   height: 92px;
-  border-radius: 50%;
-  box-shadow: 0 0 0 3px #3a1188, 7px 7px 0 rgba(6, 2, 14, 0.5);
+}
+/* 只有扇形组转；外圈、中心孔和投影不跟着转，否则投影会绕着盘面扫 */
+.cd-wedges {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
   animation: spin 4s linear infinite;
 }
-.music-body.paused .cd,
+.music-body.paused .cd-wedges,
 .music-body.paused .marquee__track {
   animation-play-state: paused;
 }
