@@ -225,9 +225,34 @@ export const sections = [
     ],
   },
   {
-    id: 'ai',
+    id: 'next',
     group: '成本去哪了？',
     no: '05',
+    nav: '延伸',
+    en: 'FURTHER',
+    tone: 'lemon',
+    title: '框架这条线往哪走',
+    lede: '下一个战场不在浏览器里，而在它的上一层和更外层。',
+    blocks: [
+      {
+        type: 'cards',
+        items: [
+          { h: '往上：全栈化', p: 'Next.js / Nuxt：首屏渲染和后端接口收进同一个工程，前端交付的是整条链路。' },
+          { h: '往边上：边缘渲染', p: 'HTML 在离用户最近的 CDN 节点生成，首屏从秒级压到毫秒级。' },
+          { h: '往外：铺多端', p: '小程序 / Taro / uni-app：一套代码铺到所有终端，跨端的缝由工具去补。' },
+        ],
+      },
+      {
+        type: 'quote',
+        label: '一句话',
+        text: '浏览器里的仗打完了。下一个问题是：下一次搬家，成本会由谁来还？',
+      },
+    ],
+  },
+  {
+    id: 'ai',
+    group: '成本去哪了？',
+    no: '06',
     nav: 'AI 冲击',
     en: 'AI IMPACT',
     tone: 'sunset',
@@ -261,32 +286,6 @@ export const sections = [
           { h: '全栈框架', p: 'Next / Nuxt 把路由、数据、渲染约定好，生成的代码不用猜边界。' },
           { h: '类型即契约', p: 'TypeScript 成了人和 AI 之间最便宜的一份合同。' },
         ],
-      },
-    ],
-  },
-  {
-    id: 'next',
-    group: '成本去哪了？',
-    no: '06',
-    nav: '延伸',
-    en: 'FURTHER',
-    tone: 'lemon',
-    title: '框架这条线往哪看',
-    lede: '三条线索还在往前走，本质上都是在继续搬运同一份成本。',
-    blocks: [
-      {
-        type: 'cards',
-        items: [
-          { h: '编译时框架', p: 'Svelte / Solid：运行时能算的事，尽量在构建时算完。' },
-          { h: '细粒度响应式', p: '更新精确到某个文本节点，不再整棵树 diff。' },
-          { h: '岛屿架构', p: 'Astro：页面默认是静态 HTML，只有交互区是「岛」。' },
-          { h: '零 JS 启动', p: 'Qwik：HTML 先到，交互时按需拉取对应的一小块代码。' },
-        ],
-      },
-      {
-        type: 'quote',
-        label: '一句话',
-        text: '下次再看到一个新框架，先问一句：它把成本挪到哪去了？',
       },
     ],
   },
