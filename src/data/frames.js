@@ -89,24 +89,64 @@ export const sections = [
     en: 'COST · COMPILE',
     tone: 'mint',
     title: '成本转移到编译阶段',
-    lede: 'Svelte、Solid、Qwik 换了个思路：与其在运行时猜哪里变了，不如在打包的时候就算清楚。',
+    lede: '与其在运行时猜哪里变了，不如在打包时就算清楚。',
     blocks: [
+      {
+        type: 'flow',
+        caption: '两条构建链：同样一份代码，复杂度落在了不同的那一段。',
+        lanes: [
+          {
+            label: '传统框架 · 编译器只做翻译',
+            tone: 'old',
+            steps: [
+              { t: '你写源码', d: 'JSX / .vue' },
+              { t: '编译器只做翻译', d: '生成创建 VNode 的代码', tag: '编译期' },
+              { t: '打包', d: '产物 JS 发给浏览器', tag: '打包' },
+              {
+                t: '浏览器跑框架运行时',
+                d: '收集依赖 → 对比 VNode → Diff → 找出变化 → 更新真实 DOM',
+                tag: '成本在这',
+                hot: true,
+              },
+            ],
+          },
+          {
+            label: '编译型 · 编译期做重活',
+            tone: 'new',
+            steps: [
+              { t: '你写源码', d: '.svelte / solid jsx / .astro' },
+              {
+                t: '编译器做重量级静态分析',
+                d: '认出哪些是响应式、哪些永远不变；提前绑定「变量 → DOM 节点」，写死「一变只改这一个节点」。',
+                tag: '成本在这',
+                hot: true,
+              },
+              { t: '打包', d: '产物：原生 HTML + 细碎精准的 JS 片段', tag: '打包' },
+              {
+                t: '浏览器几乎不算',
+                d: '静态 HTML 直接上屏；数据一变就执行预写好的 DOM 操作，没有 Diff、没有虚拟 DOM 遍历。',
+              },
+            ],
+          },
+        ],
+        note: '左边把开销摊在每一次更新上，右边提前在构建时付一次账。复杂度没少，只是换了付款的时间。',
+      },
       {
         type: 'cards',
         items: [
-          { h: 'Svelte', p: '把组件编译成直接操作 DOM 的代码，运行时几乎没有框架。' },
-          { h: 'Solid', p: '细粒度响应式：依赖在编译时绑定成信号，更新绕开虚拟 DOM。' },
-          { h: 'Qwik', p: '可恢复性 + 零 JS 启动：HTML 先到，交互时按需拉一小块代码。' },
-          { h: 'Astro', p: '岛屿架构：整页静态优先，只有需要交互的「岛」才加载 JS。' },
+          { h: 'Svelte', p: '编译成操作 DOM 的代码，运行时几乎没有框架。' },
+          { h: 'Solid', p: '依赖编译成信号，更新绕开虚拟 DOM。' },
+          { h: 'Qwik', p: 'HTML 先到，交互时再拉一小块代码。' },
+          { h: 'Astro', p: '整页静态，只有要交互的「岛」加载 JS。' },
         ],
       },
       {
         type: 'list',
         title: '代价换到了构建阶段',
         items: [
-          '构建变慢，产物结构与体积更难靠手工预期。',
-          '调试面对的是编译后的代码，心智模型要跟着换一套。',
-          '和工具链绑得更深：编译器一升级，插件生态要跟着重来。',
+          '构建变慢，产物不好预估。',
+          '调试看的是编译后的代码。',
+          '绑死编译器，升级要跟着改。',
         ],
       },
       {
@@ -132,42 +172,51 @@ export const sections = [
           {
             label: '老前辈',
             chips: [
-              { name: 'jQuery', year: '2006' },
-              { name: 'Backbone', year: '2010' },
-              { name: 'Knockout', year: '2010' },
-              { name: 'Ember', year: '2011' },
+              { name: 'jQuery', year: '2006', desc: '抹平浏览器 API，选择器 + AJAX' },
+              { name: 'Backbone', year: '2010', desc: '最早的 MVC 分层' },
+              { name: 'Knockout', year: '2010', desc: '双向绑定写进 HTML 属性' },
+              { name: 'Ember', year: '2011', desc: '全家桶，约定大于配置' },
             ],
           },
           {
             label: '三大件',
             chips: [
-              { name: 'Angular', year: '2010 / 16 重写' },
-              { name: 'React', year: '2013' },
-              { name: 'Vue', year: '2014' },
+              { name: 'Angular', year: '2010 / 16 重写', desc: '依赖注入 + 官方全家桶' },
+              { name: 'React', year: '2013', desc: '组件化 + 单向数据流' },
+              { name: 'Vue', year: '2014', desc: '渐进式，模板就能上手' },
             ],
           },
           {
             label: '后来者',
             chips: [
-              { name: 'Preact', year: '2015' },
-              { name: 'Svelte', year: '2016' },
-              { name: 'Solid', year: '2018' },
-              { name: 'Qwik', year: '2021' },
-              { name: 'Astro', year: '2021' },
+              { name: 'Preact', year: '2015', desc: 'React 的 3KB 轻量替身' },
+              { name: 'Svelte', year: '2016', desc: '编译期把运行时消掉' },
+              { name: 'Solid', year: '2018', desc: '细粒度响应，不用虚拟 DOM' },
+              { name: 'Qwik', year: '2021', desc: '可恢复，按需水合' },
+              { name: 'Astro', year: '2021', desc: '默认零 JS，孤岛渲染' },
             ],
           },
           {
             label: '全栈与跨端',
             chips: [
-              { name: 'Next.js', year: '2016' },
-              { name: 'Nuxt', year: '2016' },
-              { name: '小程序', year: '2017' },
-              { name: 'Taro', year: '2018' },
-              { name: 'uni-app', year: '2019' },
+              { name: 'Next.js', year: '2016', desc: 'React 的 SSR 与全栈层' },
+              { name: 'Nuxt', year: '2016', desc: 'Vue 版的同款约定' },
+              { name: '小程序', year: '2017', desc: '平台私有的双线程沙箱' },
+              { name: 'Taro', year: '2018', desc: '一套代码编译到多端' },
+              { name: 'uni-app', year: '2019', desc: 'Vue 语法跨小程序 / App / H5' },
             ],
           },
         ],
-        note: '上下两行是两种流派：上面在省运行时的开销，下面在扩交付的边界。',
+        note: '前三组是同一道题：怎么让浏览器里的运行时更轻。最后一组换了题目——把前端写的代码送出浏览器。',
+      },
+      {
+        type: 'cards',
+        title: '边界往外扩，具体是往哪扩',
+        items: [
+          { h: '往服务端扩', p: 'Next.js / Nuxt：首屏 HTML 由后端先渲染，接口就近接成一层 BFF，前端开始写全栈。' },
+          { h: '往平台沙箱扩', p: '小程序：页面跑在微信自己的双线程环境里，渲染和 API 都归平台管，前端只管写。' },
+          { h: '往多端铺', p: 'Taro / uni-app：一套代码编译到小程序、App、H5，平台之间的缝由工具去补。' },
+        ],
       },
       {
         type: 'quote',

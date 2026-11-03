@@ -219,6 +219,7 @@ onBeforeUnmount(() => {
                   <ul class="group-chips">
                     <li v-for="chip in group.chips" :key="chip.name" class="chip">
                       <span>{{ chip.name }}</span><b>{{ chip.year }}</b>
+                      <i v-if="chip.desc">{{ chip.desc }}</i>
                     </li>
                   </ul>
                 </div>
@@ -253,6 +254,26 @@ onBeforeUnmount(() => {
                   <pre class="code">{{ b.right.code }}</pre>
                 </div>
               </div>
+            </div>
+
+            <!-- 流程对比：两条构建链，复杂度落在不同阶段 -->
+            <div v-else-if="b.type === 'flow'" class="blk">
+              <p v-if="b.caption" class="cap">{{ b.caption }}</p>
+              <div class="flow">
+                <div v-for="lane in b.lanes" :key="lane.label" class="flow-lane" :class="lane.tone">
+                  <p class="flow-head">{{ lane.label }}</p>
+                  <ol class="flow-steps">
+                    <li v-for="(st, si) in lane.steps" :key="st.t" :class="{ hot: st.hot }">
+                      <span class="flow-no">{{ si + 1 }}</span>
+                      <div class="flow-body">
+                        <b>{{ st.t }}<em v-if="st.tag" class="flow-tag">{{ st.tag }}</em></b>
+                        <p>{{ st.d }}</p>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+              <p v-if="b.note" class="note">{{ b.note }}</p>
             </div>
 
             <!-- 对话对比：同一份需求，两种问法 -->
@@ -863,6 +884,109 @@ onBeforeUnmount(() => {
   font-size: 8.5px;
   font-weight: 400;
   color: #a13b8c;
+}
+.chip i {
+  padding-left: 7px;
+  border-left: 2px dashed rgba(58, 17, 136, 0.22);
+  font-style: normal;
+  font-size: 10.5px;
+  color: #6b5580;
+}
+
+/* 流程对比：两条构建链并排 */
+.flow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 12px 0 0;
+}
+.flow-lane {
+  --ln: #a13b8c;
+  padding: 10px 12px 14px;
+  background: #fffdf6;
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 rgba(58, 17, 136, 0.14);
+}
+.flow-lane.new {
+  --ln: #0f8a72;
+}
+.flow-head {
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px dashed rgba(58, 17, 136, 0.2);
+  font-family: var(--fh);
+  font-size: 9.5px;
+  letter-spacing: 0.6px;
+  color: var(--ln);
+}
+.flow-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.flow-steps > li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 8px;
+}
+.flow-steps > li + li {
+  margin-top: 22px;
+}
+/* 步骤之间的小箭头 */
+.flow-steps > li + li::before {
+  content: '↓';
+  position: absolute;
+  top: -18px;
+  left: 4px;
+  font-size: 11px;
+  line-height: 1;
+  color: rgba(58, 17, 136, 0.45);
+}
+.flow-no {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  background: var(--ln);
+  border: 2px solid var(--ink);
+  color: #fffdf6;
+  font-family: var(--fh);
+  font-size: 8.5px;
+}
+.flow-body b {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #2b0b56;
+}
+.flow-body p {
+  margin: 3px 0 0;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: #4a3557;
+}
+.flow-tag {
+  margin-left: 6px;
+  padding: 1px 4px;
+  border: 2px solid var(--ln);
+  font-family: var(--fh);
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--ln);
+}
+/* 成本所在的那一步，用虚线框挑出来 */
+.flow-steps > li.hot .flow-body {
+  margin-top: -2px;
+  padding: 5px 7px 6px;
+  border: 2px dashed var(--ln);
+  background: rgba(58, 17, 136, 0.045);
+}
+@media (max-width: 820px) {
+  .flow {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* 表格 */
