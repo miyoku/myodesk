@@ -156,7 +156,7 @@ onBeforeUnmount(() => {
 
     <!-- 更新胶囊 -->
     <div class="update-box pixel-corners">
-      <span>{{ t('update.label') }}</span><b>2026.10.30</b>
+      <span>{{ t('update.label') }}</span><b>2026.10.31</b>
     </div>
 
     <!-- 右键菜单 -->
