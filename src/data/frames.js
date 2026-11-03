@@ -135,7 +135,6 @@ export const sections = [
         type: 'cards',
         items: [
           { h: 'Svelte', p: '编译成操作 DOM 的代码，运行时几乎没有框架。' },
-          { h: 'Solid', p: '依赖编译成信号，更新绕开虚拟 DOM。' },
           { h: 'Qwik', p: 'HTML 先到，交互时再拉一小块代码。' },
           { h: 'Astro', p: '整页静态，只有要交互的「岛」加载 JS。' },
         ],
