@@ -114,11 +114,14 @@ const messages = {
     'universe.meta': '1024 色 · 抖动渐变 · 别点',
 
     /* 播放器 */
-    'music.track': '01 · 没那么简单 — Claude Code',
+    'music.track': '01 · Love Letter 3 — Lopu / Aevv / SAMA',
     'music.prev': '上一首',
     'music.play': '播放',
     'music.pause': '暂停',
     'music.next': '下一首',
+    'music.seek': '点击跳转',
+    'music.volume': '音量',
+    'music.mute': '静音',
 
     /* 桌宠 */
     'pet.label': 'oodle 猫，按住可以拖走',
@@ -267,11 +270,14 @@ const messages = {
     'universe.text': 'you are the universe',
     'universe.meta': '1024 colors · dithered · click nothing',
 
-    'music.track': '01 · chill it right — jay tholan',
+    'music.track': '01 · Love Letter 3 — Lopu / Aevv / SAMA',
     'music.prev': 'previous',
     'music.play': 'play',
     'music.pause': 'pause',
     'music.next': 'next',
+    'music.seek': 'click to seek',
+    'music.volume': 'volume',
+    'music.mute': 'mute',
 
     'pet.label': 'oodle the cat, drag to move',
 

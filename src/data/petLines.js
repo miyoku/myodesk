@@ -28,3 +28,26 @@ export const petLines = {
     'click me one more time and i will pretend i did not see it.',
   ],
 }
+
+/**
+ * 播放器在放歌时，桌宠不出声说话，改成哼小曲 + 音符。
+ * 同样是 |...| 包住的片段用强调色。
+ */
+export const humLines = {
+  zh: [
+    '♪ ♪ ♫ 哼——小曲。',
+    '♫ |mrrp| ♪ 这段好听。',
+    '♪ 尾巴跟着打拍子。|♫|',
+    '♫ 人类，音量刚刚好。',
+    '♪ 我在给 |Love Letter 3| 和声。',
+    '♫ 别看我了，听歌。♪',
+  ],
+  en: [
+    '♪ ♪ ♫ hum de hum.',
+    '♫ |mrrp| ♪ this part is good.',
+    '♪ tail keeping the beat. |♫|',
+    '♫ volume is just right, human.',
+    '♪ backing vocals for |Love Letter 3|.',
+    '♫ stop staring, listen. ♪',
+  ],
+}

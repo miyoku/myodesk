@@ -33,8 +33,8 @@ const files = [
 const saved = ref('')
 
 const links = [
-  { name: 'oodle.cat', note: 'site.links.oodle', url: 'https://oodlecat.neocities.org/', tone: 'pink' },
-  { name: 'nekOS', note: 'site.links.nekos', url: 'https://oodlecat.meowandsparkle.party/nekOS.html', tone: 'lemon' },
+  { name: 'oodle.cat', note: 'site.links.oodle', url: 'https://xuan.nekoweb.org/', tone: 'pink' },
+  { name: 'nekOS', note: 'site.links.nekos', url: 'https://neocities.org/browse', tone: 'lemon' },
   { name: 'neocities', note: 'site.links.neocities', url: 'https://neocities.org', tone: 'mint' },
   { name: 'petz wiki', note: 'site.links.petz', url: 'https://en.wikipedia.org/wiki/Petz', tone: 'sky' },
 ]

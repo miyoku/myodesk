@@ -70,13 +70,14 @@ import { t } from '@/i18n'
   font-size: 13px;
   letter-spacing: 1px;
   color: var(--cream);
-  text-shadow: 2px 2px 0 var(--acct-dark), 4px 4px 0 rgba(13, 6, 24, 0.6);
+  /* 只留一层硬投影：两层叠在中文字形上会糊成「重影」 */
+  text-shadow: 2px 2px 0 var(--ink);
   white-space: nowrap;
 }
 .smile {
   width: 13px;
   height: 13px;
   vertical-align: -1px;
-  filter: drop-shadow(2px 2px 0 var(--acct-dark)) drop-shadow(4px 4px 0 rgba(13, 6, 24, 0.6));
+  filter: drop-shadow(2px 2px 0 var(--ink));
 }
 </style>

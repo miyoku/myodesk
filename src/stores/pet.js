@@ -6,12 +6,14 @@ import { ref } from 'vue'
  * - x / y  拖动后的坐标；为 null 时交给 CSS 定位
  * - cue    让桌宠立刻说一句的计数器（窗口里点 "call oodle" 用）
  * - yapCue 打开了 greet 窗口（yaps）的计数器；桌宠会跑过去喊 Shut your yap
+ * - musicOn 播放器是否正在放歌；播放时桌宠改哼小曲
  */
 export const fed = ref(false)
 export const petX = ref(null)
 export const petY = ref(null)
 export const cue = ref(0)
 export const yapCue = ref(0)
+export const musicOn = ref(false)
 
 export function feedPet() {
   fed.value = true
@@ -28,4 +30,8 @@ export function yapPet() {
 export function movePet(x, y) {
   petX.value = x
   petY.value = y
+}
+
+export function setMusicOn(on) {
+  musicOn.value = on
 }

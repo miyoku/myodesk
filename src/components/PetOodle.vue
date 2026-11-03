@@ -1,8 +1,8 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import PixelIcon from '@/components/PixelIcon.vue'
-import { petLines } from '@/data/petLines'
-import { cue, movePet, petX, petY, yapCue } from '@/stores/pet'
+import { humLines, petLines } from '@/data/petLines'
+import { cue, movePet, musicOn, petX, petY, yapCue } from '@/stores/pet'
 import { locale, t } from '@/i18n'
 
 const root = ref(null)
@@ -32,8 +32,8 @@ const positionStyle = computed(() =>
 /** 气泡整体平移量：贴着桌面边缘时不得被裁 */
 const bubbleStyle = computed(() => ({ '--bs': `${bubbleShift.value}px` }))
 
-/** 6~14 秒随口说一句 */
-const nextGap = () => 6000 + Math.random() * 8000
+/** 6~14 秒随口说一句；放歌时改成 3~6 秒哼一句，像跟着节拍 */
+const nextGap = () => (musicOn.value ? 3000 + Math.random() * 3000 : 6000 + Math.random() * 8000)
 
 /** 8~18 秒自己溜达一次 */
 const nextWander = () => 8000 + Math.random() * 10000
@@ -63,7 +63,8 @@ function showLine(raw) {
 }
 
 function say() {
-  const lines = petLines[locale.value] ?? petLines.zh
+  const bank = musicOn.value ? humLines : petLines
+  const lines = bank[locale.value] ?? bank.zh
   showLine(lines[Math.floor(Math.random() * lines.length)])
 }
 
@@ -269,6 +270,21 @@ function onPointerUp() {
 
 watch(cue, () => say())
 
+/** 音乐一响就立刻哼一句；停了就切回正常台词，并重新排下一次 */
+watch(musicOn, (on) => {
+  clearTimeout(sayTimer)
+  if (on) {
+    showLine((humLines[locale.value] ?? humLines.zh)[0])
+  } else {
+    sayTimer = setTimeout(say, nextGap())
+  }
+})
+
+/** 语言切换时，正在哼的小曲也要跟着换 */
+watch(locale, () => {
+  if (musicOn.value && talking.value) say()
+})
+
 // 位置一变就重新夹一次气泡（post：等 DOM 位置更新完再量）
 watch([petX, petY], () => nextTick(placeBubble), { flush: 'post' })
 
@@ -292,7 +308,7 @@ onBeforeUnmount(() => {
   <div
     ref="root"
     class="pet"
-    :class="{ walking, 'walk-left': dir < 0 }"
+    :class="{ walking, 'walk-left': dir < 0, jamming: musicOn }"
     :style="positionStyle"
     role="img"
     :aria-label="t('pet.label')"
@@ -347,6 +363,11 @@ onBeforeUnmount(() => {
 }
 .pet.walking.walk-left .sprite {
   animation: hop-left 0.34s steps(2, end) infinite alternate;
+}
+
+/* 放歌时跟着节拍点头（跳得比平时快一档） */
+.pet.jamming .sprite {
+  animation-duration: 0.8s;
 }
 
 /* ---------- 像素对话气泡（硬边缘投影 + 扫描线底纹） ---------- */
